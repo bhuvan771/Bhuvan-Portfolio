@@ -153,7 +153,7 @@ export const socialLinks = [
   },
 ];
 
-export const Projects = [
+export const projects = [
   {
     iconUrl: summiz,
     theme: "btn-back-yellow",

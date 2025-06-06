@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Projects } from "../constants";
+import { projects } from "../constants";
 import { arrow } from "../assets/icons";
 import CTA from "../components/CTA";
 import Footer from "../components/Footer";
@@ -25,7 +25,7 @@ const Projects = () => {
         </p>
       </div>
       <div className="flex flex-wrap my-20 gap-16">
-        {Projects.map((project) => (
+        {projects.map((project) => (
           <div className="lg:w-[400px] w-full" key={project.name}>
             <div className="block-container w-12 h-12">
               <div className={`btn-back rounded-x1 ${project.theme}`} />
