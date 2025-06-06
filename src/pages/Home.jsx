@@ -2,7 +2,7 @@ import React, { Suspense, useState, useEffect, useRef } from "react";
 import { Canvas } from "@react-three/fiber";
 import Loader from "../components/Loader";
 import Island from "../models/island";
-import Sky from "../models/sky";
+import Sky from "../models/Sky";
 import Bird from "../models/Bird";
 import Plane from "../models/Plane";
 import HomeInfo from "../components/HomeInfo";
@@ -98,7 +98,7 @@ const Home = () => {
           src={!isPlayingMusic ? soundoff : soundon}
           alt="sound"
           className="w-10 h-10 cursor-pointer object-contain"
-          onClick ={() => setIsPlayingMusic(!isPlayingMusic)}
+          onClick={() => setIsPlayingMusic(!isPlayingMusic)}
         />
       </div>
     </section>
