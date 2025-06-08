@@ -42,7 +42,7 @@ const Contact = () => {
         hideAlert();
         setCurrentAnimation("Idle");
         setForm({ name: "", email: "", message: "" });
-      }, [2000]);  
+      }, [3000]);  
     }).catch((error) => {
       setIsLoading(false);
       setCurrentAnimation("Idle");

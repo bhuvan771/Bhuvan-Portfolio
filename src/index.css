@@ -99,6 +99,11 @@ body:has(.card[data-color="green"]:hover) {
   transition: 250ms;
   perspective: 500px;
 }
+canvas {
+  touch-action: none;
+}
+
+
 
 .block-container .btn-back {
   position: absolute;

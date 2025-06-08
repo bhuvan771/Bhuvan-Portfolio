@@ -20,7 +20,7 @@ const Island = ({isRotating, setIsRotating, setCurrentStage, ...props}) => {
 
   const lastX = useRef(0);
   const rotationSpeed = useRef(0);
-  const dampingFactor = 0.95;
+  const dampingFactor = 0.85;
 
   const handlePointerDown =(e)=> {
     e.stopPropagation();
@@ -47,10 +47,11 @@ const Island = ({isRotating, setIsRotating, setCurrentStage, ...props}) => {
 
       // calculate the change in the horizontal position of the mouse cursor or touch input,
       // relative to the viewport's width
+      const now = performance.now();
       const delta = (clientX - lastX.current) / viewport.width;
 
       // Update the island's rotation based on the mouse/touch movement
-      islandRef.current.rotation.y += delta * 0.01 * Math.PI;
+      islandRef.current.rotation.y += delta * 0.02 * Math.PI; // increase sensitivity
 
       // Update the reference for the last clientX position
       lastX.current = clientX;
