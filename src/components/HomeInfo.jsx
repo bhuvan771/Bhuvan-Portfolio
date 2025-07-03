@@ -73,7 +73,8 @@ const HomeInfo = ({ currentStage }) => {
   return (
     <>
       {renderContent[currentStage] || null}
-      {showInstruction && <DragInstruction />}
+     {currentStage === 1 && showInstruction && <DragInstruction />}
+
     </>
   );
 };
