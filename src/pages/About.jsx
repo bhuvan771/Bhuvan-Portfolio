@@ -4,7 +4,7 @@ import {
 } from "react-vertical-timeline-component";
 import "react-vertical-timeline-component/style.min.css";
 import { skills, experiences } from "../constants";
-import CTA from "../components/CTA";
+import Download from "../components/Download";
 import { FaGithub, FaPhoneAlt, FaLinkedin } from "react-icons/fa";
 import Footer from "../components/Footer";
 
@@ -111,7 +111,7 @@ const About = () => {
       </div>
 
       <hr className="border-slate-200" />
-      <CTA />
+      <Download />
     </section>
 
     <Footer />

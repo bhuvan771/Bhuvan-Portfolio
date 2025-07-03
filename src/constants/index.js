@@ -101,7 +101,7 @@ export const experiences = [
     iconBg: "#f0f0f0",
     date: "June 2022 -  May 2025",
     points: [
-      "Current CGPA: 6.8 (up to fifth semester).",
+      " CGPA: 7.0",
       "Studied core subjects including Data Structures, Machine Learning, Deep Learning, and AI Applications.",
       "Worked on projects involving data analysis, machine learning algorithms, and programming.",
       "Technologies used: Python, SQL,  R Programming, and more.",

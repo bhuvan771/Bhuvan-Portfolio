@@ -1,6 +1,12 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { arrow } from "../assets/icons";
+
+const DragInstruction = () => (
+  <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 text-white text-sm sm:text-base bg-black bg-opacity-70 px-4 py-2 rounded-full shadow-md animate-soft-blink">
+    🎮 Hold and drag to move
+  </div>
+);
 
 const InfoBox = ({ text, link, btnText }) => (
   <div className="info-box">
@@ -18,7 +24,6 @@ const renderContent = {
       <br />An AI & ML graduate from India
     </h1>
   ),
-
   2: (
     <InfoBox
       text="Built technical expertise and picked up many skills along the way"
@@ -26,7 +31,6 @@ const renderContent = {
       btnText="Learn more"
     />
   ),
-
   3: (
     <InfoBox
       text="Worked on one solid project recently. Curious about the impact?"
@@ -34,7 +38,6 @@ const renderContent = {
       btnText="Visit my portfolio"
     />
   ),
-
   4: (
     <InfoBox
       text="Looking to build something great? I’m just a few keystrokes away!"
@@ -45,7 +48,34 @@ const renderContent = {
 };
 
 const HomeInfo = ({ currentStage }) => {
-  return renderContent[currentStage] || null;
+  const [showInstruction, setShowInstruction] = useState(false);
+
+  useEffect(() => {
+    // Show after 2 seconds
+    const showTimer = setTimeout(() => {
+      setShowInstruction(true);
+    }, 2000);
+
+    // Hide on first drag
+    const handlePointerMove = () => {
+      setShowInstruction(false);
+      window.removeEventListener("pointermove", handlePointerMove);
+    };
+
+    window.addEventListener("pointermove", handlePointerMove);
+
+    return () => {
+      clearTimeout(showTimer);
+      window.removeEventListener("pointermove", handlePointerMove);
+    };
+  }, []);
+
+  return (
+    <>
+      {renderContent[currentStage] || null}
+      {showInstruction && <DragInstruction />}
+    </>
+  );
 };
 
 export default HomeInfo;
