@@ -1,20 +1,19 @@
 import React from "react";
-import { FaDownload } from "react-icons/fa"; // ✅ Import the download icon
+import { FaDownload } from "react-icons/fa";
 
 const CTA = () => {
   return (
-    <section className="cta">
+    <section className="cta text-center">
       <p className="cta-text">
         Want to know more about me?
         <br className="sm:block hidden" />
         Download my resume!
       </p>
 
-      {/* ✅ Download Resume Button with Icon */}
       <a
-        href="/Bhuvankumarr.pdf" // 📂 Place your resume in /public/resume.pdf
+        href="/BhuvanKumar_Resume.pdf"
         download
-        className="btn flex items-center gap-2"
+        className="btn w-full sm:w-auto flex justify-center items-center gap-2 mx-auto"
       >
         <FaDownload />
         Download Resume

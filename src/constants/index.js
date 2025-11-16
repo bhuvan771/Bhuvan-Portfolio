@@ -1,4 +1,6 @@
-import { meta, School, shopify, starbucks, tesla, Vels } from "../assets/images";
+// src/constants/index.js
+import { meta, School, shopify, starbucks, tesla, Vels, sutherland, Default } from "../assets/images";
+
 import {
   car,
   contact,
@@ -27,69 +29,27 @@ import {
   tailwindcss,
   threads,
   typescript,
+  n8n,
+  postgres
 } from "../assets/icons";
 
+/* ---------------- SKILLS ---------------- */
 export const skills = [
-  {
-    imageUrl: html,
-    name: "HTML",
-    type: "Frontend",
-  },
-
-  {
-    imageUrl: css,
-    name: "CSS",
-    type: "Frontend",
-  },
-
-  {
-    imageUrl: javascript,
-    name: "JavaScript",
-    type: "Frontend",
-  },
-
-  {
-    imageUrl: python,
-    name: "python",
-    type: "Backend",
-  },
-
-  {
-    imageUrl: SQL,
-    name: "SQL",
-    type: "Backend",
-  },
-
-  {
-    imageUrl: nextjs,
-    name: "Next.js",
-    type: "Frontend",
-  },
-
-  {
-    imageUrl: react,
-    name: "React",
-    type: "Frontend",
-  },
-
-  {
-    imageUrl: tailwindcss,
-    name: "Tailwind CSS",
-    type: "Frontend",
-  },
-
-  {
-    imageUrl: git,
-    name: "Git",
-    type: "Version Control",
-  },
-  {
-    imageUrl: github,
-    name: "GitHub",
-    type: "Version Control",
-  },
+  { imageUrl: html, name: "HTML", type: "Frontend" },
+  { imageUrl: css, name: "CSS", type: "Frontend" },
+  { imageUrl: javascript, name: "JavaScript", type: "Frontend" },
+  { imageUrl: python, name: "Python", type: "Backend" },
+  { imageUrl: SQL, name: "SQL", type: "Backend" },
+  { imageUrl: postgres, name: "PostgreSQL", type: "Database" },
+  { imageUrl: nextjs, name: "Next.js", type: "Frontend" },
+  { imageUrl: react, name: "React", type: "Frontend" },
+  { imageUrl: tailwindcss, name: "Tailwind CSS", type: "Frontend" },
+  { imageUrl: git, name: "Git", type: "Version Control" },
+  { imageUrl: github, name: "GitHub", type: "Version Control" },
+  { imageUrl: n8n, name: "n8n Automation", type: "Automation Tool" },
 ];
 
+/* ------------- ACADEMIC EXPERIENCES ------------- */
 export const experiences = [
   {
     title:
@@ -99,12 +59,12 @@ export const experiences = [
     location: "Chennai, Tamil Nadu, India",
     icon: Vels,
     iconBg: "#f0f0f0",
-    date: "June 2022 -  May 2025",
+    date: "June 2022 - June 2025",
     points: [
-      " CGPA: 7.0",
+      "CGPA: 7.02",
       "Studied core subjects including Data Structures, Machine Learning, Deep Learning, and AI Applications.",
       "Worked on projects involving data analysis, machine learning algorithms, and programming.",
-      "Technologies used: Python, SQL,  R Programming, and more.",
+      "Technologies used: Python, SQL, R Programming, and more.",
     ],
   },
   {
@@ -135,12 +95,47 @@ export const experiences = [
   },
 ];
 
-export const socialLinks = [
+/* ---------------- WORK EXPERIENCES ----------------
+   Advantix (current) + Sutherland internship (Shutterfly process)
+*/
+export const workExperiences = [
   {
-    name: "Contact",
-    iconUrl: contact,
-    link: "/contact",
+    title: "AI Automation Engineer",
+    company_name: "Advantix AGI LLP",
+    location: "Chennai, Tamil Nadu, India",
+    icon: Default, 
+    iconBg: "#4B70F5",
+    date: "Sep 15, 2025 - Present",
+    points: [
+      "Building AI-based workflow automation using n8n.",
+      "Developed email automation systems and smart reorder automation.",
+      "Created AI assistants for Instagram and WhatsApp using LLaMA 3, Ollama, and fine-tuned models.",
+      "Working on an Algo Trading App where AI predicts signals and executes buy/sell using FinGPT.",
+      "Integrating real-time AI decision making for stock trades (in progress).",
+    ],
   },
+
+  {
+  title: "Associate – Chat Support Intern (Shutterfly Process)",
+  company_name: "Sutherland Global Services Pvt Ltd",
+  location: "Chennai, Tamil Nadu, India",
+  icon: sutherland,
+  iconBg: "#FFD4D4",
+  date: "Oct 28, 2024 - Dec 30, 2024",
+  points: [
+    "Completed an internship supporting the Shutterfly process through real-time chat assistance.",
+    "Handled customer queries related to orders, product issues, and account support.",
+    "Maintained high accuracy and ensured timely resolutions across all chats.",
+    "Achieved a daily CSAT score of 8/10, earning appreciation from customers and supervisors.",
+    "Recognized for sincerity, consistency, and strong work ethic throughout the internship period.",
+  ],
+},
+
+
+];
+
+export const socialLinks = [
+  { name: "Contact", iconUrl: contact, link: "/contact" },
   {
     name: "Gmail",
     iconUrl: Gmail,
@@ -161,5 +156,13 @@ export const ProjectsList = [
     description:
       "Developed an AI-based finance assistant as part of a startup concept called 'Creatzion'. The app includes features like an AI chatbot, receipt scanner, downloadable financial statements, and Google authentication for secure login. Built to help users manage and understand their finances more effectively.",
     link: "https://creatzion.vercel.app/",
+  },
+  {
+    iconUrl: snapgram,
+    theme: "btn-back-blue",
+    name: "Social Media Automation System",
+    description:
+      "A fully automated workflow that posts images to Twitter/X. When an image is uploaded to Google Drive, the system fetches its caption from Google Sheets, posts it to Twitter, and logs all activity—including tweet ID—back into Sheets.",
+    link: "https://bhuvan-automation-twitter.netlify.app/",
   },
 ];

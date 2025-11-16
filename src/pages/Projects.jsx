@@ -9,19 +9,14 @@ const Projects = () => {
     <>
     <section className="max-container">
       <h1 className="head-text">
-        My
-        <span className="blue-gradient_text font-semibold drop-shadow">
-          Projects
+        My 
+          <span className="blue-gradient_text font-semibold drop-shadow">
+           Projects
         </span>
       </h1>
       <div className="mt-5 flex flex-col gap-3 text-slate-500">
         <p>
-          I have focused on developing practical skills through my final year
-          project, which showcases my ability to apply AI and machine learning
-          concepts to real-world problems. Although this is my first major
-          project, I am eager to expand my portfolio with more contributions and
-          collaborations in the future. Feel free to explore my project and
-          share any ideas or feedback. Your collabration is highly valued!
+         I’m actively learning new technologies and exploring practical AI solutions through my projects. These works reflect my growth, curiosity, and commitment to building real-world applications. I’m always open to feedback and collaboration.
         </p>
       </div>
       <div className="flex flex-wrap my-20 gap-16">

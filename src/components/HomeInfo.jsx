@@ -3,8 +3,54 @@ import { Link } from "react-router-dom";
 import { arrow } from "../assets/icons";
 
 const DragInstruction = () => (
-  <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 text-white text-sm sm:text-base bg-black bg-opacity-70 px-4 py-2 rounded-full shadow-md animate-soft-blink">
-    🎮 Hold and drag to move
+  <div
+    className="
+      fixed bottom-6 left-1/2 -translate-x-1/2 z-50
+      pointer-events-none
+
+      /* sizing: wide on very small screens, auto on larger screens */
+      w-[60%] max-w-[420px] sm:w-auto
+
+      /* padding & shape */
+      px-4 py-2 sm:px-5 sm:py-3 rounded-full
+
+      /* visual style: subtle glass look */
+      bg-blue-600/70 backdrop-blur-sm border border-white/8
+      shadow-lg
+
+      /* text */
+      text-white text-sm sm:text-base
+
+      /* layout */
+      flex items-center gap-3 justify-center
+
+      /* subtle breathing animation (slow) */
+      animate-hard-blink
+
+    "
+    role="status"
+    aria-hidden="true"
+  >
+    {/* Icon circle */}
+    <span
+      className="
+        flex items-center justify-center
+        w-8 h-8 sm:w-9 sm:h-9 rounded-full
+        bg-white/10 ring-1 ring-white/6
+        text-sm sm:text-lg
+      "
+      aria-hidden="true"
+    >
+      🎮
+    </span>
+
+    {/* Text block */}
+    <div className="flex flex-col leading-tight pointer-events-none">
+      <span className="font-semibold">Hold &amp; drag to move</span>
+      <span className="text-[11px] sm:text-xs text-white/80 -mt-0.5">
+        Use one finger on mobile
+      </span>
+    </div>
   </div>
 );
 
@@ -73,8 +119,7 @@ const HomeInfo = ({ currentStage }) => {
   return (
     <>
       {renderContent[currentStage] || null}
-     {currentStage === 1 && showInstruction && <DragInstruction />}
-
+      {currentStage === 1 && showInstruction && <DragInstruction />}
     </>
   );
 };

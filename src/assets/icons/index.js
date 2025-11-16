@@ -29,6 +29,8 @@ import soundoff from './soundoff.png'
 import python from './python.svg'
 import SQL from './SQL.svg'
 import Gmail from './Gmail.svg'
+import n8n from './n8n.svg'
+import postgres from './postgres.svg'
 
 export {
     css,
@@ -62,4 +64,6 @@ export {
     soundon,
     soundoff,
     Gmail,
+    n8n,
+    postgres,
 }
