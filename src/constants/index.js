@@ -30,7 +30,8 @@ import {
   threads,
   typescript,
   n8n,
-  postgres
+  postgres,
+  whatsapp
 } from "../assets/icons";
 
 /* ---------------- SKILLS ---------------- */
@@ -145,6 +146,13 @@ export const socialLinks = [
     name: "LinkedIn",
     iconUrl: linkedin,
     link: "https://www.linkedin.com/in/bhuvankumar-kumar-0539b2351/",
+  },
+
+  {
+    name: "WhatsApp",
+    iconUrl: whatsapp,
+    link: "https://wa.me/919003024825?text=Thank%20you%20for%20taking%20the%20time%20to%20view%20my%20portfolio.%20How%20can%20I%20help%20you%20today%3F",
+
   },
 ];
 
