@@ -13,27 +13,55 @@ const Contact = () => {
   const [currentAnimation, setCurrentAnimation] = useState("Idle");
   const { alert, showAlert, hideAlert } = useAlert();
 
-  // control modal visibility locally (sync with alert.show)
+  // control modal visibility locally (sync with alert.show) — replaced with local toast mechanism
   const [modalOpen, setModalOpen] = useState(false);
+  // local toast object to force re-show even if same text/type is used repeatedly
+  const [toast, setToast] = useState({ id: 0, type: "", text: "" });
+  const toastTimerRef = useRef(null);
 
   // Duration for popup visibility in ms (choose between 3000 - 5000). Currently 4000ms.
   const POPUP_DURATION = 4000;
 
-  // when alert changes, show popup and auto-hide after POPUP_DURATION
+  // cleanup on unmount
   useEffect(() => {
-    let timer;
-    if (alert && alert.show) {
-      setModalOpen(true);
-      // auto hide after duration (4s)
-      timer = setTimeout(() => {
-        setModalOpen(false);
-        hideAlert?.();
-      }, POPUP_DURATION);
-    } else {
-      setModalOpen(false);
+    return () => {
+      if (toastTimerRef.current) {
+        clearTimeout(toastTimerRef.current);
+      }
+    };
+  }, []);
+
+  // helper to trigger popup/toast — uses both local toast and external useAlert for compatibility
+  const triggerToast = (type, text) => {
+    // call external showAlert so other code relying on the hook still works
+    try {
+      showAlert?.({ show: true, text, type });
+    } catch (e) {
+      // ignore if hook behaves differently
     }
-    return () => clearTimeout(timer);
-  }, [alert, hideAlert]);
+
+    const id = Date.now();
+    // set a new toast so same message/type will still re-render
+    setToast({ id, type, text });
+    setModalOpen(true);
+
+    // clear previous timer (if any)
+    if (toastTimerRef.current) {
+      clearTimeout(toastTimerRef.current);
+    }
+
+    // schedule hide
+    toastTimerRef.current = setTimeout(() => {
+      setModalOpen(false);
+      // attempt to hide via hook if available
+      try {
+        hideAlert?.();
+      } catch (e) {
+        // ignore
+      }
+      toastTimerRef.current = null;
+    }, POPUP_DURATION);
+  };
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -41,11 +69,38 @@ const Contact = () => {
   const handleFocus = () => setCurrentAnimation("walk");
   const handleBlur = () => setCurrentAnimation("Idle");
 
+  // simple gmail-only validation (you can relax this if you want any email)
+  const isValidGmail = (email) => {
+    if (!email) return false;
+    const gmailRegex = /^[^\s@]+@gmail\.com$/i;
+    return gmailRegex.test(email.trim());
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    // prevent double submit
+    if (isLoading) return;
+
+    // client-side validation
+    if (!form.message || form.message.trim().length === 0) {
+      setCurrentAnimation("Idle");
+      // show validation error (will re-show even if same error happened before)
+      triggerToast("danger", "Please enter a message before sending.");
+      return;
+    }
+
+    if (!isValidGmail(form.email)) {
+      setCurrentAnimation("Idle");
+      // show validation error for email as well
+      triggerToast("danger", "Please provide a valid Gmail address (example@gmail.com).");
+      return;
+    }
+
     setIsLoading(true);
     setCurrentAnimation("hit");
 
+    // Send notification email to you
     emailjs
       .send(
         import.meta.env.VITE_APP_EMAILJS_SERVICE_ID,
@@ -60,8 +115,22 @@ const Contact = () => {
         import.meta.env.VITE_APP_EMAILJS_PUBLIC_KEY
       )
       .then(() => {
+        // Send auto-reply email to the sender
+        return emailjs.send(
+          import.meta.env.VITE_APP_EMAILJS_SERVICE_ID,
+          import.meta.env.VITE_APP_EMAILJS_AUTO_REPLY_TEMPLATE_ID,
+          {
+            from_name: form.name,
+            email: form.email,
+            message: form.message,
+          },
+          import.meta.env.VITE_APP_EMAILJS_PUBLIC_KEY
+        );
+      })
+      .then(() => {
         setIsLoading(false);
-        showAlert({ show: true, text: "Message sent successfully!", type: "success" });
+        // success toast (will re-show if user sends again)
+        triggerToast("success", "Message sent successfully!");
 
         // clear form state after a short delay to let the user see the animation
         setTimeout(() => {
@@ -73,11 +142,8 @@ const Contact = () => {
         setIsLoading(false);
         setCurrentAnimation("Idle");
         console.error(error);
-        showAlert({
-          show: true,
-          text: "I didn't receive your message. Please try again.",
-          type: "danger",
-        });
+        // error toast (explicitly handled the same way as success)
+        triggerToast("danger", "I didn't receive your message. Please try again.");
       });
   };
 
@@ -86,9 +152,7 @@ const Contact = () => {
     const isSuccess = type === "success";
     return (
       <div
-        className={`flex items-center gap-4 ${
-          isSuccess ? "text-green-700" : "text-red-600"
-        }`}
+        className={`flex items-center gap-4 ${isSuccess ? "text-green-700" : "text-red-600"}`}
       >
         <div
           className={`flex items-center justify-center rounded-full shrink-0 ${
@@ -97,18 +161,32 @@ const Contact = () => {
           aria-hidden="true"
         >
           {isSuccess ? (
-            <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="w-5 h-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2}
+            >
               <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
             </svg>
           ) : (
-            <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="w-5 h-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2}
+            >
               <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
             </svg>
           )}
         </div>
 
         <div className="flex flex-col">
-          <span className="font-medium text-sm md:text-base">{isSuccess ? "Message sent" : "Error"}</span>
+          <span className="font-medium text-sm md:text-base">{isSuccess ? "Message sent" : "You Forgot to Say Something "}</span>
           <span className="text-xs md:text-sm text-slate-600 max-w-xs break-words">{text}</span>
         </div>
       </div>
@@ -140,7 +218,6 @@ const Contact = () => {
                 onChange={handleChange}
                 onFocus={handleFocus}
                 onBlur={handleBlur}
-                required
                 aria-label="Your name"
               />
             </label>
@@ -151,12 +228,11 @@ const Contact = () => {
                 type="email"
                 name="email"
                 className="input"
-                placeholder="you@example.com"
+                placeholder="you@gmail.com"
                 value={form.email}
                 onChange={handleChange}
                 onFocus={handleFocus}
                 onBlur={handleBlur}
-                required
                 aria-label="Your email"
               />
             </label>
@@ -172,7 +248,6 @@ const Contact = () => {
                 onChange={handleChange}
                 onFocus={handleFocus}
                 onBlur={handleBlur}
-                required
                 aria-label="Message"
               />
             </label>
@@ -189,7 +264,11 @@ const Contact = () => {
           </form>
         </div>
 
-        <div className="lg:w-1/2 w-full lg:h-auto md:h-[550px] h-[350px] mt-8 lg:mt-0">
+        {/* Canvas Column
+            - set overflow-visible so the model isn't clipped
+            - ensure the underlying WebGL canvas has `touch-action: pan-y` so mobile vertical scroll works when touching the model
+        */}
+        <div className="lg:w-1/2 w-full lg:h-auto md:h-[550px] h-[350px] mt-8 lg:mt-0 overflow-visible">
           <Canvas
             camera={{
               position: [0, 0, 5],
@@ -197,6 +276,15 @@ const Contact = () => {
               near: 0.1,
               far: 1000,
             }}
+            // set touchAction on the actual GL canvas element (most reliable)
+            onCreated={(state) => {
+              try {
+                state.gl.domElement.style.touchAction = "pan-y";
+              } catch (e) {
+                // ignore if not possible
+              }
+            }}
+            style={{ touchAction: "pan-y" }}
           >
             <directionalLight intensity={2.5} position={[0, 0, 1]} />
             <ambientLight intensity={0.5} />
@@ -220,7 +308,9 @@ const Contact = () => {
           - no close button, auto fades in/out in POPUP_DURATION ms
       */}
       {modalOpen && (
+        // add key={toast.id} so the toast remounts when id changes (forces re-show for same messages)
         <div
+          key={toast.id}
           role="status"
           aria-live="polite"
           className="fixed inset-x-0 top-6 z-50 flex justify-center px-4 pointer-events-none"
@@ -237,7 +327,7 @@ const Contact = () => {
                   animation: `popup-fade ${POPUP_DURATION}ms ease forwards`,
                 }}
               >
-                <ModalContent type={alert?.type} text={alert?.text} />
+                <ModalContent type={toast.type || alert?.type} text={toast.text || alert?.text} />
               </div>
             </div>
           </div>
